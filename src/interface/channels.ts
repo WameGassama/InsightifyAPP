@@ -1,5 +1,6 @@
 interface Channels {
   channels: {
+    color: string;
     display_name: string;
     handle: string;
     statistics: {
