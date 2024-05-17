@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import ListItem from '../components/listItem';
+import ListItem from '..';
+import LoadMore from '../../loadMore';
 
 describe('ListItem', () => {
   it('should display a YouTube channel', () => {

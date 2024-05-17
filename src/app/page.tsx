@@ -1,4 +1,4 @@
-import getChannels from '@/server/action';
+import getChannels, { getChannelsAggregate } from '@/server/action';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import ListView from './components/listView';
 
@@ -6,8 +6,13 @@ export default async function Home() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['channels', 0],
-    queryFn: () => getChannels(1),
+    queryKey: ['channels', 10],
+    queryFn: async () => await getChannels(0, 10),
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['channels_aggregate'],
+    queryFn: async () => await getChannelsAggregate(),
   });
 
   return (
