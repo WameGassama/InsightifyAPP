@@ -3,9 +3,9 @@ import Counter from '..';
 
 describe('Counter', () => {
   it('should diplay the total numbers of YouTube channels', () => {
-    const { getByText } = render(<Counter limit={50} total={3000} />);
+    const { getByText } = render(<Counter limit={50} />);
 
-    const title = getByText('Showing 0 - 50 of 3,000 channels');
+    const title = getByText('Showing 0 - 50 channels');
 
     expect(title).toBeVisible;
   });

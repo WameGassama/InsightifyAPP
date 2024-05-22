@@ -1,5 +1,5 @@
-interface Channels {
-  channels: {
+interface UpdateChannel {
+  update_channel: {
     id: string;
     status: string;
     color: string;
@@ -12,5 +12,5 @@ interface Channels {
         views: number;
       };
     };
-  }[];
+  };
 }

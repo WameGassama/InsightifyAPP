@@ -4,18 +4,38 @@ import { formatNumber } from '@/utils/formatNumber';
 import { getInitials } from '@/utils/getInitials';
 import { randomColor } from '@/utils/randomColor';
 import Link from 'next/link';
+import { BsBookmarkFill } from 'react-icons/bs';
+import { CiBookmark } from 'react-icons/ci';
+import { FiBookmark } from 'react-icons/fi';
 
 interface Props {
+  id: string;
+  route: string | null;
   initials: string;
+  status: string;
   display_name: string;
   handle: string;
   subscribers: number;
   uploads: number;
   views: number;
   color: string;
+  updateChannel: (id: string, status: string | null) => void;
 }
 
-const ListItem = ({ initials, display_name, handle, subscribers, uploads, views, color }: Props) => {
+const ListItem = ({
+  id,
+  route,
+  status,
+  initials,
+  display_name,
+  handle,
+  subscribers,
+  uploads,
+  views,
+  color,
+  updateChannel,
+}: Props) => {
+  console.log(route);
   return (
     <li className="bg-white py-7 px-10 flex rounded-lg shadow-lg">
       <div className="flex w-[30%]">
@@ -57,10 +77,27 @@ const ListItem = ({ initials, display_name, handle, subscribers, uploads, views,
           <div className=" text-zinc-400">Views</div>
         </div>
       </div>
-      <div className="w-[25%]">
-        <div className="w-1/12"></div>
-        <div className="w-1/12"></div>
-        <div className="w-1/12"></div>
+      <div className="flex w-[25%] gap-5">
+        <div className="w-1/2 flex flex-col justify-center">
+          {route === 'pending' && (
+            <button
+              onClick={() => updateChannel(id, status === 'Pending' ? null : 'Pending')}
+              className="flex gap-2 rounded-full bg-white border text-black border-black hover:scale-105 font-bold py-2 px-7 items-center"
+            >
+              {status === 'Pending' ? <BsBookmarkFill size={15} color="#000" /> : <FiBookmark size={17} color="#000" />}
+              {status === 'Pending' ? 'Saved' : 'Save'}
+            </button>
+          )}
+        </div>
+        <div className="w-1/2 flex flex-col justify-center">
+          <button
+            onClick={() => updateChannel(id, status === 'Pending' ? null : 'Pending')}
+            className="flex gap-2 rounded-full bg-white border text-black border-black hover:scale-105 font-bold py-2 px-7 items-center"
+          >
+            {status === 'Pending' ? <BsBookmarkFill size={15} color="#000" /> : <FiBookmark size={17} color="#000" />}
+            {status === 'Pending' ? 'Saved' : 'Save'}
+          </button>
+        </div>
       </div>
     </li>
   );

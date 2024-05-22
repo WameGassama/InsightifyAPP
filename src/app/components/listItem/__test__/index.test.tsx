@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import ListItem from '..';
-import LoadMore from '../../loadMore';
 
 describe('ListItem', () => {
   it('should display a YouTube channel', () => {
     const { getByTestId } = render(
       <ListItem
+        id="1"
         initials={'John Doe'}
         display_name={'John Doe'}
         handle={'@JohnDoe'}
@@ -14,6 +14,8 @@ describe('ListItem', () => {
         uploads={909}
         views={92897891}
         color={''}
+        updateChannel={() => {}}
+        status={''}
       />
     );
 

@@ -1,6 +1,8 @@
-const getChannels = `
-query Channels($limit: Int, $offset: Int) {
-  channels(offset: $offset, limit: $limit) {
+const getChannelsQuery = `
+query Channels($limit: Int, $offset: Int, $status: String) {
+  channels(where: {status: {_eq: $status}}, offset: $offset, limit: $limit) {
+    id
+    status
     color
     display_name
     handle
@@ -14,4 +16,29 @@ query Channels($limit: Int, $offset: Int) {
   }
 }`;
 
-export default getChannels;
+const getCountQuery = `
+query ChannelsAggregate($_eq: String) {
+  channels_aggregate(where: {status: {_eq: $_eq}}) {
+    count
+  }
+}`;
+
+const updateChannelMutation = `
+mutation UpdateChannel($id: String!, $status: String) {
+  update_channel(id: $id, input: {status: $status}) {
+    display_name
+    id
+    handle
+    statistics {
+      total {
+        subscribers
+        uploads
+        views
+      }
+    }
+    color
+    status
+  }
+}`;
+
+export default { getChannelsQuery, getCountQuery, updateChannelMutation };
