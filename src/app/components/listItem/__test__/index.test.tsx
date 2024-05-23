@@ -16,6 +16,7 @@ describe('ListItem', () => {
         color={''}
         updateChannel={() => {}}
         status={''}
+        route={null}
       />
     );
 

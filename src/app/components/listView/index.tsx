@@ -2,7 +2,7 @@
 
 import { keepPreviousData, useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import ListItem from '../listItem';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import Counter from '../counter';
 import GraphqlRequest from '@/server/action';
 import channels from '@/graphql/channels';
@@ -10,20 +10,55 @@ import LoadMore from '../loadMore';
 import { CiBookmark, CiBookmarkCheck, CiBookmarkRemove, CiUser } from 'react-icons/ci';
 import StatsCard from '../statsCard';
 import { useRouter, useSearchParams } from 'next/navigation';
+import NoListItem from '../noListItem';
 
 const ListView = () => {
-  const [limit, setLimit] = useState({ all_channels: 10, pending_channels: 10 });
+  const [limit, setLimit] = useState({
+    all_channels: 10,
+    pending_channels: 10,
+    accepted_channels: 10,
+    rejected_channels: 10,
+  });
 
   const all_channels = useQuery({
     queryKey: ['channels', limit.all_channels],
-    queryFn: async () => await GraphqlRequest(channels.getChannelsQuery, { offeset: 0, limit: limit.all_channels }),
+    queryFn: async () =>
+      await GraphqlRequest(channels.getChannelsQuery, {
+        offeset: 0,
+        limit: limit.all_channels,
+        status: { _in: ['Pending', 'null'] },
+      }),
     placeholderData: keepPreviousData,
   });
 
   const pending_channels = useQuery({
     queryKey: ['channels', 'pending', limit.pending_channels],
     queryFn: async () =>
-      await GraphqlRequest(channels.getChannelsQuery, { offeset: 0, limit: limit.pending_channels, status: 'Pending' }),
+      await GraphqlRequest(channels.getChannelsQuery, {
+        offeset: 0,
+        limit: limit.pending_channels,
+        status: { _eq: 'Pending' },
+      }),
+    placeholderData: keepPreviousData,
+  });
+  const accepted_channels = useQuery({
+    queryKey: ['channels', 'accepted', limit.accepted_channels],
+    queryFn: async () =>
+      await GraphqlRequest(channels.getChannelsQuery, {
+        offeset: 0,
+        limit: limit.accepted_channels,
+        status: { _eq: 'Accepted' },
+      }),
+    placeholderData: keepPreviousData,
+  });
+  const rejected_channels = useQuery({
+    queryKey: ['channels', 'rejected', limit.rejected_channels],
+    queryFn: async () =>
+      await GraphqlRequest(channels.getChannelsQuery, {
+        offeset: 0,
+        limit: limit.rejected_channels,
+        status: { _eq: 'Rejected' },
+      }),
     placeholderData: keepPreviousData,
   });
 
@@ -59,6 +94,11 @@ const ListView = () => {
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['channels', limit.all_channels] });
       queryClient.invalidateQueries({ queryKey: ['channels', 'pending', limit.pending_channels] });
+      queryClient.invalidateQueries({ queryKey: ['channels', 'accepted', limit.pending_channels] });
+      queryClient.invalidateQueries({ queryKey: ['channels', 'rejected', limit.pending_channels] });
+      queryClient.invalidateQueries({ queryKey: ['total_count'] });
+      queryClient.invalidateQueries({ queryKey: ['accepted_count'] });
+      queryClient.invalidateQueries({ queryKey: ['rejected_count'] });
       queryClient.invalidateQueries({ queryKey: ['pending_count'] });
       queryClient.setQueryData(['channels', limit, variables.id], data.update_channel);
       queryClient.setQueryData(['channels', limit], (prev: Channels) => {
@@ -88,24 +128,56 @@ const ListView = () => {
   };
 
   const filtered = useMemo(() => {
-    if (all_channels || pending_channels) {
+    if (all_channels || pending_channels || accepted_channels || rejected_channels) {
       if (status === null) {
-        return { type: 'all_channels', data: all_channels };
-      } else {
-        return { type: 'pending_channels', data: pending_channels };
+        return {
+          type: 'all_channels',
+          data: all_channels,
+          loadMore: total_count?.channels_aggregate && total_count?.channels_aggregate.count > limit.all_channels,
+        };
+      }
+      if (status === 'pending') {
+        return {
+          type: 'pending_channels',
+          data: pending_channels,
+          loadMore:
+            pending_count?.channels_aggregate && pending_count?.channels_aggregate.count > limit.pending_channels,
+        };
+      }
+      if (status === 'accepted') {
+        return {
+          type: 'accepted_channels',
+          data: accepted_channels,
+          loadMore:
+            accepted_count?.channels_aggregate && accepted_count?.channels_aggregate.count > limit.accepted_channels,
+        };
+      }
+      if (status === 'rejected') {
+        return {
+          type: 'rejected_channels',
+          data: rejected_channels,
+          loadMore:
+            rejected_count?.channels_aggregate && rejected_count?.channels_aggregate.count > limit.rejected_channels,
+        };
       }
     }
-  }, [status, all_channels, pending_channels]);
+  }, [status, all_channels, pending_channels, accepted_channels, rejected_channels]);
 
   const loadMore = () => {
     setLimit((prev) => {
       return {
         all_channels: filtered?.type === 'all_channels' ? prev.all_channels + 10 : prev.all_channels,
         pending_channels: filtered?.type === 'pending_channels' ? prev.pending_channels + 10 : prev.pending_channels,
+        accepted_channels:
+          filtered?.type === 'accepted_channels' ? prev.accepted_channels + 10 : prev.accepted_channels,
+        rejected_channels:
+          filtered?.type === 'rejected_channels' ? prev.rejected_channels + 10 : prev.rejected_channels,
       };
     });
     filtered && filtered.data.refetch();
   };
+
+  console.log(filtered?.loadMore);
 
   const UpdateChannel = (id: string, status: string | null) => {
     mutate({
@@ -120,7 +192,7 @@ const ListView = () => {
         <StatsCard
           icon={<CiUser color="black" size={20} />}
           name="Total YouTube Channels"
-          value={!total_count_fetching && total_count !== undefined ? total_count.channels_aggregate.count : null}
+          value={total_count !== undefined ? total_count.channels_aggregate.count : null}
           status={null}
           setStatus={setStatus}
         />
@@ -146,32 +218,35 @@ const ListView = () => {
           setStatus={setStatus}
         />
       </div>
-
       {filtered?.data.data && (
         <Fragment>
-          <Counter limit={filtered.data.data?.channels.length} />
-          <ul className="flex flex-col space-y-10">
-            {filtered.data.data?.channels.map((channel) => {
-              return (
-                <ListItem
-                  key={channel.id}
-                  id={channel.id}
-                  route={status}
-                  color={channel.color}
-                  initials={channel.display_name}
-                  display_name={channel.display_name}
-                  handle={channel.handle}
-                  subscribers={channel.statistics.total.subscribers}
-                  uploads={channel.statistics.total.uploads}
-                  views={channel.statistics.total.views}
-                  status={channel.status}
-                  updateChannel={UpdateChannel}
-                />
-              );
-            })}
-          </ul>
-          {filtered.data.data.channels.length >= 10 && (
-            <LoadMore onClick={loadMore} isFetching={filtered.data.isFetching} />
+          {filtered.data.data.channels.length === 0 ? (
+            <NoListItem route={status} />
+          ) : (
+            <Fragment>
+              <Counter limit={filtered.data.data?.channels.length} />
+              <ul className="flex flex-col space-y-10">
+                {filtered.data.data?.channels.map((channel) => {
+                  return (
+                    <ListItem
+                      key={channel.id}
+                      id={channel.id}
+                      route={status}
+                      color={channel.color}
+                      initials={channel.display_name}
+                      display_name={channel.display_name}
+                      handle={channel.handle}
+                      subscribers={channel.statistics.total.subscribers}
+                      uploads={channel.statistics.total.uploads}
+                      views={channel.statistics.total.views}
+                      status={channel.status}
+                      updateChannel={UpdateChannel}
+                    />
+                  );
+                })}
+              </ul>
+              {filtered.loadMore && <LoadMore onClick={loadMore} isFetching={filtered.data.isFetching} />}
+            </Fragment>
           )}
         </Fragment>
       )}

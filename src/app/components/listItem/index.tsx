@@ -6,6 +6,8 @@ import { randomColor } from '@/utils/randomColor';
 import Link from 'next/link';
 import { BsBookmarkFill } from 'react-icons/bs';
 import { CiBookmark } from 'react-icons/ci';
+import { FaRegTimesCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaCircleCheck, FaRegCircleCheck } from 'react-icons/fa6';
 import { FiBookmark } from 'react-icons/fi';
 
 interface Props {
@@ -35,7 +37,6 @@ const ListItem = ({
   color,
   updateChannel,
 }: Props) => {
-  console.log(route);
   return (
     <li className="bg-white py-7 px-10 flex rounded-lg shadow-lg">
       <div className="flex w-[30%]">
@@ -78,25 +79,49 @@ const ListItem = ({
         </div>
       </div>
       <div className="flex w-[25%] gap-5">
+        <div className={`${route === 'rejected' && 'order-last'} w-1/2 flex flex-col justify-center`}>
+          {(route === 'pending' || route === 'rejected') && (
+            <button
+              onClick={() => updateChannel(id, status === 'Rejected' ? null : 'Rejected')}
+              className="flex gap-2 rounded-full bg-white border border-black  text-black  hover:scale-105 font-bold py-2 px-5 items-center"
+            >
+              {status === 'Rejected' ? (
+                <FaTimesCircle size={15} color="#000" />
+              ) : (
+                <FaRegTimesCircle size={17} color="#000" />
+              )}
+              {status === 'Rejected' ? 'Rejected' : 'Reject'}
+            </button>
+          )}
+        </div>
         <div className="w-1/2 flex flex-col justify-center">
-          {route === 'pending' && (
+          {(route === 'pending' || route === 'accepted') && (
+            <button
+              onClick={() => updateChannel(id, status === 'Accepted' ? null : 'Accepted')}
+              className="flex gap-2 rounded-full bg-black text-white hover:scale-105 font-bold py-2 px-5 items-center"
+            >
+              {status === 'Accepted' ? (
+                <>
+                  <FaCircleCheck size={15} color="#fff" />
+                  Accepted
+                </>
+              ) : (
+                <>
+                  <FaRegCircleCheck size={17} color="#fff" />
+                  Accept
+                </>
+              )}
+            </button>
+          )}
+          {route === null && (
             <button
               onClick={() => updateChannel(id, status === 'Pending' ? null : 'Pending')}
-              className="flex gap-2 rounded-full bg-white border text-black border-black hover:scale-105 font-bold py-2 px-7 items-center"
+              className="flex gap-2 rounded-full bg-white border text-black border-black hover:scale-105 font-bold py-2 px-5 items-center"
             >
               {status === 'Pending' ? <BsBookmarkFill size={15} color="#000" /> : <FiBookmark size={17} color="#000" />}
               {status === 'Pending' ? 'Saved' : 'Save'}
             </button>
           )}
-        </div>
-        <div className="w-1/2 flex flex-col justify-center">
-          <button
-            onClick={() => updateChannel(id, status === 'Pending' ? null : 'Pending')}
-            className="flex gap-2 rounded-full bg-white border text-black border-black hover:scale-105 font-bold py-2 px-7 items-center"
-          >
-            {status === 'Pending' ? <BsBookmarkFill size={15} color="#000" /> : <FiBookmark size={17} color="#000" />}
-            {status === 'Pending' ? 'Saved' : 'Save'}
-          </button>
         </div>
       </div>
     </li>

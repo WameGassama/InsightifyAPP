@@ -1,6 +1,6 @@
 const getChannelsQuery = `
-query Channels($limit: Int, $offset: Int, $status: String) {
-  channels(where: {status: {_eq: $status}}, offset: $offset, limit: $limit) {
+query Channels($status: string_filter_operators!, $limit: Int, $offset: Int) {
+  channels(where: {status: $status}, offset: $offset, limit: $limit) {
     id
     status
     color

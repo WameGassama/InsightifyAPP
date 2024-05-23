@@ -2,18 +2,33 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import ListView from './components/listView';
 import GraphqlRequest from '@/server/action';
 import channels from '@/graphql/channels';
+import { Suspense } from 'react';
 
 export default async function Home() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: ['channels', 10],
-    queryFn: async () => await GraphqlRequest(channels.getChannelsQuery, { offset: 0, limit: 10 }),
+    queryFn: async () =>
+      await GraphqlRequest(channels.getChannelsQuery, { offset: 0, limit: 10, status: { _in: ['Pending', 'null'] } }),
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['channels', 'Pending', 10],
-    queryFn: async () => await GraphqlRequest(channels.getChannelsQuery, { offset: 0, limit: 10, status: 'Pending' }),
+    queryKey: ['channels', 'pending', 10],
+    queryFn: async () =>
+      await GraphqlRequest(channels.getChannelsQuery, { offset: 0, limit: 10, status: { _eq: 'Pending' } }),
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['channels', 'accepted', 10],
+    queryFn: async () =>
+      await GraphqlRequest(channels.getChannelsQuery, { offset: 0, limit: 10, status: { _eq: 'Accepted' } }),
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['channels', 'rejected', 10],
+    queryFn: async () =>
+      await GraphqlRequest(channels.getChannelsQuery, { offset: 0, limit: 10, status: { _eq: 'Rejected' } }),
   });
 
   await queryClient.prefetchQuery({
@@ -38,11 +53,13 @@ export default async function Home() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <main className="flex flex-col bg-gray-100 items-center">
-        <div className="max-w-7xl w-full lg:px-8 py-6 mb-20">
-          <ListView />
-        </div>
-      </main>
+      <Suspense>
+        <main className="flex flex-col bg-gray-100 items-center">
+          <div className="max-w-7xl w-full lg:px-8 py-6 mb-20">
+            <ListView />
+          </div>
+        </main>
+      </Suspense>
     </HydrationBoundary>
   );
 }
