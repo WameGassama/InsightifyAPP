@@ -14,19 +14,19 @@ export default async function Home() {
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['channels', 'pending', 10],
+    queryKey: ['pending_channels', 10],
     queryFn: async () =>
       await GraphqlRequest(channels.getChannelsQuery, { offset: 0, limit: 10, status: { _eq: 'Pending' } }),
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['channels', 'accepted', 10],
+    queryKey: ['accepted_channels', 10],
     queryFn: async () =>
       await GraphqlRequest(channels.getChannelsQuery, { offset: 0, limit: 10, status: { _eq: 'Accepted' } }),
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['channels', 'rejected', 10],
+    queryKey: ['rejected_channels', 10],
     queryFn: async () =>
       await GraphqlRequest(channels.getChannelsQuery, { offset: 0, limit: 10, status: { _eq: 'Rejected' } }),
   });
@@ -55,7 +55,7 @@ export default async function Home() {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense>
         <main className="flex flex-col bg-gray-100 items-center">
-          <div className="max-w-7xl w-full lg:px-8 py-6 mb-20">
+          <div className="max-w-7xl w-full lg:px-8 py-6">
             <ListView />
           </div>
         </main>

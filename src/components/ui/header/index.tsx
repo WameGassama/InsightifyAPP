@@ -16,18 +16,18 @@ import { FiClock } from 'react-icons/fi';
 import { IoPricetag } from 'react-icons/io5';
 import Image from 'next/image';
 
-const brancher = [
+const status = [
   {
-    name: 'Viceværtservice',
-    href: '/vicevaertservice',
+    name: 'Pending',
+    href: '/?status=pending',
   },
   {
-    name: 'Gulvservice',
-    href: '/gulvservice',
+    name: 'Accepted',
+    href: '/?status=accepted',
   },
   {
-    name: 'Glarmester',
-    href: '/glarmester',
+    name: 'Rejected',
+    href: '/?status=rejected',
   },
 ];
 
@@ -76,7 +76,7 @@ export default function Header({ sticky }: { sticky?: boolean }) {
             >
               <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4 divide-y">
-                  {brancher.map((item) => (
+                  {status.map((item) => (
                     <div
                       key={item.name}
                       className="group relative flex items-center gap-x-6 p-4 text-sm leading-6 hover:bg-gray-50"
@@ -112,7 +112,7 @@ export default function Header({ sticky }: { sticky?: boolean }) {
             <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Insightify</span>
               <div className="h-10 w-32 relative">
-                <Image fill src="/assets/bygnow-logo-black.svg" alt="" />
+                <Image fill src="/assets/insightify-logo.svg" alt="" />
               </div>
             </a>
             <button
@@ -131,14 +131,14 @@ export default function Header({ sticky }: { sticky?: boolean }) {
                   {({ open }) => (
                     <>
                       <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                        Brancher
+                        Dashboard
                         <ChevronDownIcon
                           className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
                           aria-hidden="true"
                         />
                       </Disclosure.Button>
                       <Disclosure.Panel className="mt-2 space-y-2">
-                        {[...brancher].map((item) => (
+                        {[...status].map((item) => (
                           <Disclosure.Button
                             key={item.name}
                             as="a"

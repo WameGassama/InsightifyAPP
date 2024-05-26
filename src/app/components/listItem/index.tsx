@@ -5,14 +5,15 @@ import { getInitials } from '@/utils/getInitials';
 import { randomColor } from '@/utils/randomColor';
 import Link from 'next/link';
 import { BsBookmarkFill } from 'react-icons/bs';
-import { CiBookmark } from 'react-icons/ci';
 import { FaRegTimesCircle, FaTimesCircle } from 'react-icons/fa';
 import { FaCircleCheck, FaRegCircleCheck } from 'react-icons/fa6';
 import { FiBookmark } from 'react-icons/fi';
+import Image from 'next/image';
 
 interface Props {
   id: string;
   route: string | null;
+  avatar: string | null;
   initials: string;
   status: string;
   display_name: string;
@@ -26,6 +27,7 @@ interface Props {
 
 const ListItem = ({
   id,
+  avatar,
   route,
   status,
   initials,
@@ -38,14 +40,29 @@ const ListItem = ({
   updateChannel,
 }: Props) => {
   return (
-    <li className="bg-white py-7 px-10 flex rounded-lg shadow-lg">
+    <li className="bg-white py-7 px-10 flex rounded-lg shadow-lg overflow-hidden" style={{ overflowAnchor: 'none' }}>
       <div className="flex w-[30%]">
         <div className="w-[25%]">
-          <div className={`rounded-full w-16 h-16 flex justify-center items-center`} style={{ backgroundColor: color }}>
-            <div className="text-white font-bold text-xl" data-testid="initials">
-              {getInitials(initials)}
+          {avatar ? (
+            <div className={`rounded-full border shadow-lg w-16 h-16 flex justify-center items-center relative`}>
+              <Image
+                className="rounded-full"
+                src={avatar}
+                fill
+                alt={''}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
             </div>
-          </div>
+          ) : (
+            <div
+              className={`rounded-full w-16 h-16 flex justify-center items-center`}
+              style={{ backgroundColor: color }}
+            >
+              <div className="text-white font-bold text-xl" data-testid="initials">
+                {getInitials(initials)}
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex flex-col ml-3 justify-center w-[75%]">
           <div className="text-black font-bold text-xl" data-testid="display name">

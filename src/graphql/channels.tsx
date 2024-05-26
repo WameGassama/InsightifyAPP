@@ -1,8 +1,9 @@
 const getChannelsQuery = `
 query Channels($status: string_filter_operators!, $limit: Int, $offset: Int) {
-  channels(where: {status: $status}, offset: $offset, limit: $limit) {
+  channels(where: {status: $status, avatar: {}}, offset: $offset, limit: $limit) {
     id
     status
+    avatar
     color
     display_name
     handle
@@ -18,7 +19,7 @@ query Channels($status: string_filter_operators!, $limit: Int, $offset: Int) {
 
 const getCountQuery = `
 query ChannelsAggregate($_eq: String) {
-  channels_aggregate(where: {status: {_eq: $_eq}}) {
+  channels_aggregate(where: {status: {_eq: $_eq}, avatar: {}}) {
     count
   }
 }`;

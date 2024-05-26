@@ -32,7 +32,7 @@ const ListView = () => {
   });
 
   const pending_channels = useQuery({
-    queryKey: ['channels', 'pending', limit.pending_channels],
+    queryKey: ['pending_channels', limit.pending_channels],
     queryFn: async () =>
       await GraphqlRequest(channels.getChannelsQuery, {
         offeset: 0,
@@ -42,7 +42,7 @@ const ListView = () => {
     placeholderData: keepPreviousData,
   });
   const accepted_channels = useQuery({
-    queryKey: ['channels', 'accepted', limit.accepted_channels],
+    queryKey: ['accepted_channels', limit.accepted_channels],
     queryFn: async () =>
       await GraphqlRequest(channels.getChannelsQuery, {
         offeset: 0,
@@ -52,7 +52,7 @@ const ListView = () => {
     placeholderData: keepPreviousData,
   });
   const rejected_channels = useQuery({
-    queryKey: ['channels', 'rejected', limit.rejected_channels],
+    queryKey: ['rejected_channels', limit.rejected_channels],
     queryFn: async () =>
       await GraphqlRequest(channels.getChannelsQuery, {
         offeset: 0,
@@ -93,9 +93,9 @@ const ListView = () => {
       await GraphqlRequest(channels.updateChannelMutation, { id, status }),
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['channels', limit.all_channels] });
-      queryClient.invalidateQueries({ queryKey: ['channels', 'pending', limit.pending_channels] });
-      queryClient.invalidateQueries({ queryKey: ['channels', 'accepted', limit.pending_channels] });
-      queryClient.invalidateQueries({ queryKey: ['channels', 'rejected', limit.pending_channels] });
+      queryClient.invalidateQueries({ queryKey: ['pending_channels', limit.pending_channels] });
+      queryClient.invalidateQueries({ queryKey: ['accepted_channels', limit.pending_channels] });
+      queryClient.invalidateQueries({ queryKey: ['rejected_channels', limit.pending_channels] });
       queryClient.invalidateQueries({ queryKey: ['total_count'] });
       queryClient.invalidateQueries({ queryKey: ['accepted_count'] });
       queryClient.invalidateQueries({ queryKey: ['rejected_count'] });
@@ -161,7 +161,21 @@ const ListView = () => {
         };
       }
     }
-  }, [status, all_channels, pending_channels, accepted_channels, rejected_channels]);
+  }, [
+    status,
+    all_channels,
+    pending_channels,
+    accepted_channels,
+    rejected_channels,
+    accepted_count?.channels_aggregate,
+    limit.accepted_channels,
+    limit.all_channels,
+    limit.pending_channels,
+    limit.rejected_channels,
+    pending_count?.channels_aggregate,
+    rejected_count?.channels_aggregate,
+    total_count?.channels_aggregate,
+  ]);
 
   const loadMore = () => {
     setLimit((prev) => {
@@ -177,7 +191,7 @@ const ListView = () => {
     filtered && filtered.data.refetch();
   };
 
-  console.log(filtered?.loadMore);
+  console.log(filtered?.data.data?.channels);
 
   const UpdateChannel = (id: string, status: string | null) => {
     mutate({
@@ -225,26 +239,31 @@ const ListView = () => {
           ) : (
             <Fragment>
               <Counter limit={filtered.data.data?.channels.length} />
-              <ul className="flex flex-col space-y-10">
-                {filtered.data.data?.channels.map((channel) => {
-                  return (
-                    <ListItem
-                      key={channel.id}
-                      id={channel.id}
-                      route={status}
-                      color={channel.color}
-                      initials={channel.display_name}
-                      display_name={channel.display_name}
-                      handle={channel.handle}
-                      subscribers={channel.statistics.total.subscribers}
-                      uploads={channel.statistics.total.uploads}
-                      views={channel.statistics.total.views}
-                      status={channel.status}
-                      updateChannel={UpdateChannel}
-                    />
-                  );
-                })}
-              </ul>
+              <div>
+                <div>
+                  <ul className={`flex flex-col gap-10 ${filtered.loadMore ? 'mb-10' : 'mb-[84px]'}`}>
+                    {filtered.data.data?.channels.map((channel) => {
+                      return (
+                        <ListItem
+                          key={channel.id}
+                          id={channel.id}
+                          avatar={channel.avatar}
+                          route={status}
+                          color={channel.color}
+                          initials={channel.display_name}
+                          display_name={channel.display_name}
+                          handle={channel.handle}
+                          subscribers={channel.statistics.total.subscribers}
+                          uploads={channel.statistics.total.uploads}
+                          views={channel.statistics.total.views}
+                          status={channel.status}
+                          updateChannel={UpdateChannel}
+                        />
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
               {filtered.loadMore && <LoadMore onClick={loadMore} isFetching={filtered.data.isFetching} />}
             </Fragment>
           )}
