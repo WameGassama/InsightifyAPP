@@ -92,21 +92,120 @@ const ListView = () => {
     mutationFn: async ({ id, status }: { id: string; status: string | null }) =>
       await GraphqlRequest(channels.updateChannelMutation, { id, status }),
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['channels', limit.all_channels] });
-      queryClient.invalidateQueries({ queryKey: ['pending_channels', limit.pending_channels] });
-      queryClient.invalidateQueries({ queryKey: ['accepted_channels', limit.pending_channels] });
-      queryClient.invalidateQueries({ queryKey: ['rejected_channels', limit.pending_channels] });
-      queryClient.invalidateQueries({ queryKey: ['total_count'] });
-      queryClient.invalidateQueries({ queryKey: ['accepted_count'] });
-      queryClient.invalidateQueries({ queryKey: ['rejected_count'] });
-      queryClient.invalidateQueries({ queryKey: ['pending_count'] });
-      queryClient.setQueryData(['channels', limit, variables.id], data.update_channel);
-      queryClient.setQueryData(['channels', limit], (prev: Channels) => {
+      queryClient.setQueryData(['channels', limit.accepted_channels], (prev: Channels) => {
         const result = {
           channels: prev.channels.map((channel) => (channel.id === variables.id ? data.update_channel : channel)),
         };
 
         return result;
+      });
+      queryClient.setQueryData(['pending_channels', limit.pending_channels], (prev: Channels) => {
+        let result = prev.channels;
+
+        switch (data.update_channel.status) {
+          case 'Pending': {
+            prev.channels.push(data.update_channel);
+            break;
+          }
+          case 'Accepted':
+          case 'Rejected':
+          case null: {
+            result = prev.channels.filter((prev) => prev.id !== data.update_channel.id);
+            break;
+          }
+        }
+
+        return {
+          channels: result,
+        };
+      });
+      queryClient.setQueryData(['accepted_channels', limit.pending_channels], (prev: Channels) => {
+        let result = prev.channels;
+
+        switch (data.update_channel.status) {
+          case 'Accepted': {
+            prev.channels.push(data.update_channel);
+            break;
+          }
+        }
+
+        return {
+          channels: result,
+        };
+      });
+      queryClient.setQueryData(['rejected_channels', limit.pending_channels], (prev: Channels) => {
+        let result = prev.channels;
+
+        switch (data.update_channel.status) {
+          case 'Rejected': {
+            prev.channels.push(data.update_channel);
+            break;
+          }
+        }
+
+        return {
+          channels: result,
+        };
+      });
+      queryClient.setQueryData(['total_count'], (prev: ChannelsAggregate) => {
+        let count = prev.channels_aggregate.count;
+
+        switch (data.update_channel.status) {
+          case 'Pending': {
+            count = prev.channels_aggregate.count - 1;
+            break;
+          }
+          case null: {
+            count = prev.channels_aggregate.count + 1;
+            break;
+          }
+        }
+
+        return { channels_aggregate: { count } };
+      });
+      queryClient.setQueryData(['accepted_count'], (prev: ChannelsAggregate) => {
+        let count = prev.channels_aggregate.count;
+
+        switch (data.update_channel.status) {
+          case 'Accepted': {
+            count = prev.channels_aggregate.count + 1;
+            break;
+          }
+        }
+
+        return { channels_aggregate: { count } };
+      });
+      queryClient.setQueryData(['pending_count'], (prev: ChannelsAggregate) => {
+        let count = prev.channels_aggregate.count;
+
+        console.log(data.update_channel.status);
+
+        switch (data.update_channel.status) {
+          case 'Pending': {
+            count = prev.channels_aggregate.count + 1;
+            break;
+          }
+          case 'Accepted':
+          case 'Rejected':
+          case null: {
+            count = prev.channels_aggregate.count - 1;
+            break;
+          }
+        }
+
+        return { channels_aggregate: { count } };
+      });
+      queryClient.setQueryData(['rejected_count'], (prev: ChannelsAggregate) => {
+        let count = prev.channels_aggregate.count;
+
+        switch (data.update_channel.status) {
+          case 'Rejected': {
+            count = prev.channels_aggregate.count + 1;
+            break;
+          }
+        }
+
+        return { channels_aggregate: { count } };
       });
     },
   });
@@ -120,46 +219,39 @@ const ListView = () => {
   const setStatus = (status: string | null) => {
     if (status) {
       router.push(`?status=${status}`);
-    }
-
-    if (!status) {
+    } else {
       router.push('/');
     }
   };
 
   const filtered = useMemo(() => {
-    if (all_channels || pending_channels || accepted_channels || rejected_channels) {
-      if (status === null) {
+    switch (status) {
+      case null:
         return {
           type: 'all_channels',
           data: all_channels,
-          loadMore: total_count?.channels_aggregate && total_count?.channels_aggregate.count > limit.all_channels,
+          loadMore: total_count !== undefined && total_count?.channels_aggregate?.count > limit.all_channels,
         };
-      }
-      if (status === 'pending') {
+      case 'pending':
         return {
           type: 'pending_channels',
           data: pending_channels,
-          loadMore:
-            pending_count?.channels_aggregate && pending_count?.channels_aggregate.count > limit.pending_channels,
+          loadMore: pending_count !== undefined && pending_count?.channels_aggregate?.count > limit.pending_channels,
         };
-      }
-      if (status === 'accepted') {
+      case 'accepted':
         return {
           type: 'accepted_channels',
           data: accepted_channels,
-          loadMore:
-            accepted_count?.channels_aggregate && accepted_count?.channels_aggregate.count > limit.accepted_channels,
+          loadMore: accepted_count !== undefined && accepted_count?.channels_aggregate?.count > limit.accepted_channels,
         };
-      }
-      if (status === 'rejected') {
+      case 'rejected':
         return {
           type: 'rejected_channels',
           data: rejected_channels,
-          loadMore:
-            rejected_count?.channels_aggregate && rejected_count?.channels_aggregate.count > limit.rejected_channels,
+          loadMore: rejected_count !== undefined && rejected_count?.channels_aggregate?.count > limit.rejected_channels,
         };
-      }
+      default:
+        return null; // Ugyldig status
     }
   }, [
     status,
@@ -167,14 +259,14 @@ const ListView = () => {
     pending_channels,
     accepted_channels,
     rejected_channels,
-    accepted_count?.channels_aggregate,
+    accepted_count,
+    pending_count,
+    rejected_count,
+    total_count,
     limit.accepted_channels,
     limit.all_channels,
     limit.pending_channels,
     limit.rejected_channels,
-    pending_count?.channels_aggregate,
-    rejected_count?.channels_aggregate,
-    total_count?.channels_aggregate,
   ]);
 
   const loadMore = () => {
@@ -190,8 +282,6 @@ const ListView = () => {
     });
     filtered && filtered.data.refetch();
   };
-
-  console.log(filtered?.data.data?.channels);
 
   const UpdateChannel = (id: string, status: string | null) => {
     mutate({

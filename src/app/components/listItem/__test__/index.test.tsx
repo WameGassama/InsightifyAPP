@@ -17,6 +17,7 @@ describe('ListItem', () => {
         updateChannel={() => {}}
         status={''}
         route={null}
+        avatar={null}
       />
     );
 

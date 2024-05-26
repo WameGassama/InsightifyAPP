@@ -30,6 +30,7 @@ mutation UpdateChannel($id: String!, $status: String) {
     display_name
     id
     handle
+    avatar
     statistics {
       total {
         subscribers
@@ -42,4 +43,6 @@ mutation UpdateChannel($id: String!, $status: String) {
   }
 }`;
 
-export default { getChannelsQuery, getCountQuery, updateChannelMutation };
+const channels = { getChannelsQuery, getCountQuery, updateChannelMutation };
+
+export default channels;
