@@ -92,12 +92,25 @@ const ListView = () => {
     mutationFn: async ({ id, status }: { id: string; status: string | null }) =>
       await GraphqlRequest(channels.updateChannelMutation, { id, status }),
     onSuccess: (data, variables) => {
-      queryClient.setQueryData(['channels', limit.accepted_channels], (prev: Channels) => {
-        const result = {
-          channels: prev.channels.map((channel) => (channel.id === variables.id ? data.update_channel : channel)),
-        };
+      queryClient.setQueryData(['channels', limit.all_channels], (prev: Channels) => {
+        let result = prev.channels;
 
-        return result;
+        switch (data.update_channel.status) {
+          case 'Pending':
+          case null: {
+            result = prev.channels.map((channel) => (channel.id === variables.id ? data.update_channel : channel));
+            break;
+          }
+          case 'Accepted':
+          case 'Rejected': {
+            result = prev.channels.filter((prev) => prev.id !== data.update_channel.id);
+            break;
+          }
+        }
+
+        return {
+          channels: result,
+        };
       });
       queryClient.setQueryData(['pending_channels', limit.pending_channels], (prev: Channels) => {
         let result = prev.channels;
@@ -119,7 +132,7 @@ const ListView = () => {
           channels: result,
         };
       });
-      queryClient.setQueryData(['accepted_channels', limit.pending_channels], (prev: Channels) => {
+      queryClient.setQueryData(['accepted_channels', limit.accepted_channels], (prev: Channels) => {
         let result = prev.channels;
 
         switch (data.update_channel.status) {
@@ -133,7 +146,7 @@ const ListView = () => {
           channels: result,
         };
       });
-      queryClient.setQueryData(['rejected_channels', limit.pending_channels], (prev: Channels) => {
+      queryClient.setQueryData(['rejected_channels', limit.rejected_channels], (prev: Channels) => {
         let result = prev.channels;
 
         switch (data.update_channel.status) {

@@ -4,6 +4,8 @@ import GraphqlRequest from '@/server/action';
 import channels from '@/graphql/channels';
 import { Suspense } from 'react';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const queryClient = new QueryClient();
 
