@@ -191,8 +191,6 @@ const ListView = () => {
       queryClient.setQueryData(['pending_count'], (prev: ChannelsAggregate) => {
         let count = prev.channels_aggregate.count;
 
-        console.log(data.update_channel.status);
-
         switch (data.update_channel.status) {
           case 'Pending': {
             count = prev.channels_aggregate.count + 1;
@@ -233,7 +231,7 @@ const ListView = () => {
     if (status) {
       router.push(`?status=${status}`);
     } else {
-      router.push('/');
+      router.push('/youtube');
     }
   };
 
@@ -312,6 +310,7 @@ const ListView = () => {
           value={total_count !== undefined ? total_count.channels_aggregate.count : null}
           status={null}
           setStatus={setStatus}
+          hover
         />
         <StatsCard
           icon={<CiBookmarkCheck color="#22c55e" size={20} />}
@@ -319,6 +318,7 @@ const ListView = () => {
           value={accepted_count !== undefined ? accepted_count.channels_aggregate.count : null}
           status={'accepted'}
           setStatus={setStatus}
+          hover
         />
         <StatsCard
           icon={<CiBookmarkRemove color="#dc2626" size={20} />}
@@ -326,6 +326,7 @@ const ListView = () => {
           value={rejected_count !== undefined ? rejected_count.channels_aggregate.count : null}
           status={'rejected'}
           setStatus={setStatus}
+          hover
         />
         <StatsCard
           icon={<CiBookmark color="#fbbf24" size={20} />}
@@ -333,6 +334,7 @@ const ListView = () => {
           value={pending_count !== undefined ? pending_count.channels_aggregate.count : null}
           status={'pending'}
           setStatus={setStatus}
+          hover
         />
       </div>
       {filtered?.data.data && (

@@ -40,67 +40,68 @@ const ListItem = ({
   updateChannel,
 }: Props) => {
   return (
-    <li className="bg-white py-7 px-10 flex rounded-lg shadow-lg overflow-hidden" style={{ overflowAnchor: 'none' }}>
-      <div className="flex w-[30%]">
-        <div className="w-[25%]">
-          {avatar ? (
-            <div className={`rounded-full border shadow-lg w-16 h-16 flex justify-center items-center relative`}>
-              <Image
-                className="rounded-full"
-                src={avatar}
-                fill
-                alt={''}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            </div>
-          ) : (
-            <div
-              className={`rounded-full w-16 h-16 flex justify-center items-center`}
-              style={{ backgroundColor: color }}
-            >
-              <div className="text-white font-bold text-xl" data-testid="initials">
-                {getInitials(initials)}
+    <li className="bg-white flex rounded-lg shadow-lg overflow-hidden" style={{ overflowAnchor: 'none' }}>
+      <Link className="flex w-[75%] py-7 cursor-pointer pl-10" href={`/youtube/${handle.replace('@', '')}`}>
+        <div className="flex w-[35%]">
+          <div className="w-[25%]">
+            {avatar ? (
+              <div className={`rounded-full border shadow-lg w-16 h-16 flex justify-center items-center relative`}>
+                <Image
+                  className="rounded-full"
+                  src={avatar}
+                  fill
+                  alt={''}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
               </div>
+            ) : (
+              <div
+                className={`rounded-full w-16 h-16 flex justify-center items-center`}
+                style={{ backgroundColor: color }}
+              >
+                <div className="text-white font-bold text-xl" data-testid="initials">
+                  {getInitials(initials)}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col ml-3 justify-center w-[75%]">
+            <div className="text-black font-bold text-xl" data-testid="display name">
+              {display_name}
             </div>
-          )}
-        </div>
-        <div className="flex flex-col ml-3 justify-center w-[75%]">
-          <div className="text-black font-bold text-xl" data-testid="display name">
-            {display_name}
-          </div>
-          <div>
-            <Link className=" text-blue-500 font-bold" href={`https://www.youtube.com/${handle}`} data-testid="handle">
+            <div className=" text-blue-500 font-bold" data-testid="handle">
               {handle}
-            </Link>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex w-[45%]">
-        <div className="flex flex-col ml-3 justify-center w-4/12">
-          <div className="text-black font-bold text-xl" data-testid="subscribers">
-            {formatNumber(subscribers)}
+        <div className="flex w-[65%]">
+          <div className="flex flex-col ml-3 justify-center w-4/12">
+            <div className="text-black font-bold text-xl" data-testid="subscribers">
+              {formatNumber(subscribers)}
+            </div>
+            <div className=" text-zinc-400">Subscribers</div>
           </div>
-          <div className=" text-zinc-400">Subscribers</div>
-        </div>
-        <div className="flex flex-col ml-3 justify-center w-4/12">
-          <div className="text-black font-bold text-xl" data-testid="uploads">
-            {uploads}
+          <div className="flex flex-col ml-3 justify-center w-4/12">
+            <div className="text-black font-bold text-xl" data-testid="uploads">
+              {uploads}
+            </div>
+            <div className=" text-zinc-400">Uploads</div>
           </div>
-          <div className=" text-zinc-400">Uploads</div>
-        </div>
-        <div className="flex flex-col ml-3 justify-center w-4/12">
-          <div className="text-black font-bold text-xl" data-testid="views">
-            {formatNumber(views)}
+          <div className="flex flex-col ml-3 justify-center w-4/12">
+            <div className="text-black font-bold text-xl" data-testid="views">
+              {formatNumber(views)}
+            </div>
+            <div className=" text-zinc-400">Views</div>
           </div>
-          <div className=" text-zinc-400">Views</div>
         </div>
-      </div>
-      <div className="flex w-[25%] gap-5">
+      </Link>
+      <div className="flex w-[25%] gap-5 py-7 pr-10">
         <div className={`${route === 'rejected' && 'order-last'} w-1/2 flex flex-col justify-center`}>
           {(route === 'pending' || route === 'rejected') && (
             <button
-              onClick={() => updateChannel(id, status === 'Rejected' ? null : 'Rejected')}
-              className="flex gap-2 rounded-full bg-white border border-black  text-black  hover:scale-105 font-bold py-2 px-5 items-center"
+              onClick={() => updateChannel(id, 'Rejected')}
+              className={`flex gap-2 rounded-full bg-white border border-black  text-black  hover:scale-105 font-bold py-2 px-5 items-center`}
+              disabled={status === 'Rejected' ? true : false}
             >
               {status === 'Rejected' ? (
                 <FaTimesCircle size={15} color="#000" />
@@ -114,8 +115,9 @@ const ListItem = ({
         <div className="w-1/2 flex flex-col justify-center">
           {(route === 'pending' || route === 'accepted') && (
             <button
-              onClick={() => updateChannel(id, status === 'Accepted' ? null : 'Accepted')}
+              onClick={() => updateChannel(id, 'Accepted')}
               className="flex gap-2 rounded-full bg-black text-white hover:scale-105 font-bold py-2 px-5 items-center"
+              disabled={status === 'Accepted' ? true : false}
             >
               {status === 'Accepted' ? (
                 <>

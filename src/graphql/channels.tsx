@@ -1,3 +1,47 @@
+const getHandlesQuery = `
+query Handle {
+  channels {
+    id
+    handle
+  }
+}`;
+
+const getChannelQuery = `
+query Channel($handle: string_filter_operators) {
+  channel(where: {handle: $handle}) {
+    id
+    handle
+    avatar
+    display_name
+    country
+    joined_date
+    status
+    url
+    statistics {
+      total {
+        subscribers
+        uploads
+        views
+      }
+      daily {
+        date
+        subscribers
+        uploads
+        views
+      }
+    }
+    socials {
+      facebook
+      instagram
+      tiktok
+      twitter
+    }
+    bio
+    color
+  }
+}
+`;
+
 const getChannelsQuery = `
 query Channels($status: string_filter_operators!, $limit: Int, $offset: Int) {
   channels(where: {status: $status, avatar: {}}, offset: $offset, limit: $limit) {
@@ -43,6 +87,6 @@ mutation UpdateChannel($id: String!, $status: String) {
   }
 }`;
 
-const channels = { getChannelsQuery, getCountQuery, updateChannelMutation };
+const channels = { getChannelsQuery, getChannelQuery, getCountQuery, updateChannelMutation, getHandlesQuery };
 
 export default channels;

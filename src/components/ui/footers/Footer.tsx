@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
-import { FaFacebookSquare } from "react-icons/fa";
+import Link from 'next/link';
+import Image from 'next/image';
+import { FaFacebookSquare } from 'react-icons/fa';
 
 const Footer: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
                     <Image
                       fill
                       sizes="(max-width: 1200px) 100vw, 60vw"
-                      src="/assets/bygnow-logo-white.svg"
+                      src="/assets/insightify-white-logo.svg"
                       alt=""
                     />
                   </div>
@@ -26,16 +26,11 @@ const Footer: React.FC = () => {
             <div className="flex space-x-7 col-span-4">
               <div className="space-x-32 xl:space-x-40 lg:flex w-full">
                 <div className="space-y-7 flex flex-col w-full">
-                  <label className="font-quicksand font-semibold border-b w-full pb-1 text-white">
-                    Navigation
-                  </label>
+                  <label className="font-quicksand font-semibold border-b w-full pb-1 text-white">Navigation</label>
                   <ul className="space-y-4 text-sm font-light font-quicksand w-max text-white">
-                    {[{ label: "Startside", link: "/" }].map((navigation) => {
+                    {[{ label: 'Home', link: '/' }].map((navigation) => {
                       return (
-                        <li
-                          key={navigation.label}
-                          className="hover:text-secondary"
-                        >
+                        <li key={navigation.label} className="hover:text-secondary">
                           <Link href={navigation.link} locale={false}>
                             {navigation.label}
                           </Link>
@@ -47,20 +42,15 @@ const Footer: React.FC = () => {
               </div>
               <div className="space-x-32 xl:space-x-40 lg:flex w-full">
                 <div className="space-y-7 flex flex-col w-full">
-                  <label className="font-quicksand font-semibold border-b w-full pb-1 text-white">
-                    Brancher
-                  </label>
+                  <label className="font-quicksand font-semibold border-b w-full pb-1 text-white">Discovery</label>
                   <ul className="space-y-4 text-sm font-light font-quicksand w-max text-white">
                     {[
-                      { label: "Viceværtservice", link: "/vicevaertservice" },
-                      { label: "Gulvservice", link: "/gulvservice" },
-                      { label: "Glarmester", link: "/glarmester" },
+                      { label: 'Pending', link: '/youtube/?status=pending' },
+                      { label: 'Accepted', link: '/youtube/?status=accepted' },
+                      { label: 'Rejected', link: '/youtube/?status=rejected' },
                     ].map((navigation) => {
                       return (
-                        <li
-                          key={navigation.label}
-                          className="hover:text-secondary"
-                        >
+                        <li key={navigation.label} className="hover:text-secondary">
                           <Link href={navigation.link} locale={false}>
                             {navigation.label}
                           </Link>
@@ -77,10 +67,10 @@ const Footer: React.FC = () => {
               <label>Copyright © {new Date().getFullYear()} · </label>
               <label className="text-secondary">
                 <Link href="/" locale={false}>
-                  Bygnow
+                  Insightify
                 </Link>
               </label>
-              <label> · Alle rettigheder forbeholdes.</label>
+              <label> · All rights reserved.</label>
             </div>
           </div>
         </div>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="385.708" height="264.408" viewBox="0 0 385.708 264.408">
+  <g id="chart-2" transform="translate(-57.1 -117.8)">
+    <g id="Grid_chart-11">
+      <path id="Path_112" data-name="Path 112" d="M114.8,371.1a.684.684,0,0,1-.7-.7h0v-208a.7.7,0,1,1,1.4,0v208a.684.684,0,0,1-.7.7Z" fill="#d1d3d4"/>
+      <path id="Path_113" data-name="Path 113" d="M155.9,371.1a.684.684,0,0,1-.7-.7h0v-208a.7.7,0,0,1,1.4,0h0v208a.684.684,0,0,1-.7.7Z" fill="#d1d3d4"/>
+      <path id="Path_114" data-name="Path 114" d="M197,371.1a.684.684,0,0,1-.7-.7h0v-208a.7.7,0,0,1,1.4,0v208a.684.684,0,0,1-.7.7Z" fill="#d1d3d4"/>
+      <path id="Path_115" data-name="Path 115" d="M238.1,371.1a.684.684,0,0,1-.7-.7h0v-208a.7.7,0,1,1,1.4,0h0v208a.751.751,0,0,1-.7.7Z" fill="#d1d3d4"/>
+      <path id="Path_116" data-name="Path 116" d="M279.2,371.1a.684.684,0,0,1-.7-.7h0v-208a.7.7,0,0,1,1.4,0v208A.751.751,0,0,1,279.2,371.1Z" fill="#d1d3d4"/>
+      <path id="Path_117" data-name="Path 117" d="M320.2,371.1a.684.684,0,0,1-.7-.7h0v-208a.7.7,0,0,1,1.4,0v208A.684.684,0,0,1,320.2,371.1Z" fill="#d1d3d4"/>
+      <path id="Path_118" data-name="Path 118" d="M361.3,371.1a.684.684,0,0,1-.7-.7h0v-208a.7.7,0,0,1,1.4,0h0v208A.684.684,0,0,1,361.3,371.1Z" fill="#d1d3d4"/>
+      <path id="Path_119" data-name="Path 119" d="M402.4,371.1a.684.684,0,0,1-.7-.7h0v-208a.7.7,0,0,1,1.4,0h0v208A.684.684,0,0,1,402.4,371.1Z" fill="#d1d3d4"/>
+      <path id="Path_120" data-name="Path 120" d="M402.4,163.1H70.3a.7.7,0,0,1,0-1.4H402.4a.684.684,0,0,1,.7.7.842.842,0,0,1-.7.7Z" fill="#d1d3d4"/>
+      <path id="Path_121" data-name="Path 121" d="M402.4,204.1H70.3a.7.7,0,1,1,0-1.4H402.4a.7.7,0,1,1,0,1.4Z" fill="#d1d3d4"/>
+      <path id="Path_122" data-name="Path 122" d="M402.4,245.2H70.3a.7.7,0,0,1,0-1.4H402.4a.7.7,0,1,1,0,1.4Z" fill="#d1d3d4"/>
+      <path id="Path_123" data-name="Path 123" d="M402.4,286.3H70.3a.7.7,0,0,1,0-1.4H402.4a.7.7,0,1,1,0,1.4Z" fill="#d1d3d4"/>
+      <path id="Path_124" data-name="Path 124" d="M402.4,327.4H70.3a.7.7,0,0,1,0-1.4H402.4a.7.7,0,1,1,0,1.4Z" fill="#d1d3d4"/>
+      <path id="Path_125" data-name="Path 125" d="M402.4,368.5H70.3a.7.7,0,0,1,0-1.4H402.4a.7.7,0,1,1,0,1.4Z" fill="#d1d3d4"/>
+    </g>
+    <g id="Value_2_chart-11">
+      <path id="Path_126" data-name="Path 126" d="M419,289.5H367.6l-10.4-17.3v17.3h-.5a6.7,6.7,0,0,0-6.7,6.7h0v43.1a6.7,6.7,0,0,0,6.7,6.7H419a6.7,6.7,0,0,0,6.7-6.7h0V296.2a6.7,6.7,0,0,0-6.7-6.7Z" fill="#0756fb"/>
+      <path id="Path_127" data-name="Path 127" d="M412.6,311.4H363.2a.7.7,0,0,1,0-1.4h49.4a.7.7,0,0,1,0,1.4Z" fill="#fff"/>
+      <path id="Path_128" data-name="Path 128" d="M401.6,325.5H363.2a.7.7,0,0,1,0-1.4h38.4a.7.7,0,1,1,0,1.4Z" fill="#fff"/>
+    </g>
+    <g id="Line_Chart_2_chart-11">
+      <circle id="Ellipse_20" data-name="Ellipse 20" cx="9" cy="9" r="9" transform="translate(105.8 317.7)" fill="#0756fb"/>
+      <circle id="Ellipse_21" data-name="Ellipse 21" cx="9" cy="9" r="9" transform="translate(190.6 279.9)" fill="#0756fb"/>
+      <circle id="Ellipse_22" data-name="Ellipse 22" cx="9" cy="9" r="9" transform="translate(270.2 317.7)" fill="#0756fb"/>
+      <circle id="Ellipse_23" data-name="Ellipse 23" cx="9" cy="9" r="9" transform="translate(352.3 235.5)" fill="#0756fb"/>
+      <path id="Path_129" data-name="Path 129" d="M279.1,329.5a2.663,2.663,0,0,1-1.2-.3l-78.4-37.3-87.9,36.5a2.8,2.8,0,1,1-2.3-5.1h.1l89.1-37a2.657,2.657,0,0,1,2.3.1l77.8,37,80.8-80.8a2.828,2.828,0,0,1,4,4h0l-82.2,82.2a3.771,3.771,0,0,1-2.1.7Z" fill="#0756fb"/>
+    </g>
+    <g id="Line_Chart_1_chart-11">
+      <circle id="Ellipse_24" data-name="Ellipse 24" cx="9" cy="9" r="9" transform="translate(188 191.4)" fill="#231f20"/>
+      <circle id="Ellipse_25" data-name="Ellipse 25" cx="9" cy="9" r="9" transform="translate(270.2 175.7)" fill="#231f20"/>
+      <circle id="Ellipse_26" data-name="Ellipse 26" cx="9" cy="9" r="9" transform="translate(350.1 200.3)" fill="#231f20"/>
+      <circle id="Ellipse_27" data-name="Ellipse 27" cx="9" cy="9" r="9" transform="translate(105.8 235.5)" fill="#231f20"/>
+      <path id="Path_130" data-name="Path 130" d="M114.8,247.3a2.862,2.862,0,0,1-2.8-2.8,2.946,2.946,0,0,1,1.5-2.5l82.2-44.2c.3-.1.5-.2.8-.3l84.6-15.6a2.25,2.25,0,0,1,1.4.1L360,206.6a2.783,2.783,0,0,1-1.7,5.3h0l-76.9-24.4L197.9,203l-81.8,44a3.079,3.079,0,0,1-1.3.3Z" fill="#231f20"/>
+    </g>
+    <g id="XY_Axis_chart-11">
+      <path id="Path_131" data-name="Path 131" d="M428.2,374H70.3a4.908,4.908,0,0,1-4.9-4.9V143.7a4.9,4.9,0,0,1,9.8,0V364.2h353a4.9,4.9,0,0,1,0,9.8Z" fill="#231f20"/>
+      <path id="Path_132" data-name="Path 132" d="M80.6,150.7H60a2.883,2.883,0,0,1-2.9-2.8,2.822,2.822,0,0,1,.4-1.5l10.3-17.2a2.819,2.819,0,0,1,3.9-1,3.178,3.178,0,0,1,1,1L83,146.4a2.8,2.8,0,0,1-1,3.9,2.3,2.3,0,0,1-1.4.4Z" fill="#231f20"/>
+      <path id="Path_133" data-name="Path 133" d="M419.9,379.4V358.8a2.883,2.883,0,0,1,2.8-2.9,2.822,2.822,0,0,1,1.5.4l17.2,10.3a2.819,2.819,0,0,1,1,3.9,3.178,3.178,0,0,1-1,1l-17.2,10.3a2.8,2.8,0,0,1-3.9-1,2.3,2.3,0,0,1-.4-1.4Z" fill="#231f20"/>
+    </g>
+    <g id="Value_1_chart-11">
+      <path id="Path_134" data-name="Path 134" d="M234.9,117.8H172.5a6.7,6.7,0,0,0-6.7,6.7h0v38a6.7,6.7,0,0,0,6.7,6.7h6l13.2,14.5V169.2h43.2a6.7,6.7,0,0,0,6.7-6.7h0v-38A6.7,6.7,0,0,0,234.9,117.8Z" fill="#0756fb"/>
+      <path id="Path_135" data-name="Path 135" d="M228.4,135H179a.7.7,0,0,1,0-1.4h49.4a.7.7,0,1,1,0,1.4Z" fill="#fff"/>
+      <path id="Path_136" data-name="Path 136" d="M217.4,149H179a.7.7,0,1,1,0-1.4h38.4a.7.7,0,1,1,0,1.4Z" fill="#fff"/>
+    </g>
+  </g>
+</svg>

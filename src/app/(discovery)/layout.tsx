@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
-import '../styles/globals.css';
+import '../../styles/globals.css';
 import Header from '@/components/ui/header';
 import Provider from '@/utils/providers';
 import Footer from '@/components/ui/footers/Footer';
@@ -24,9 +24,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${quicksand.variable} font-quicksand bg-white bg-none`}>
         <Provider>
-          <Header />
+          <Header dark={false} bg="bg-transparent" />
           {children}
-          {/* <Footer /> */}
+          <Footer />
         </Provider>
       </body>
     </html>

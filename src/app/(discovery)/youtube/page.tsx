@@ -57,7 +57,7 @@ export default async function Home() {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense>
         <main className="flex flex-col bg-gray-100 items-center">
-          <div className="max-w-7xl w-full lg:px-8 py-6">
+          <div className="max-w-7xl w-full lg:px-8 py-6 pb-20">
             <ListView />
           </div>
         </main>

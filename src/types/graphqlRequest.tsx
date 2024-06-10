@@ -1,1 +1,1 @@
-type GraphqlRequest = Channels & ChannelsAggregate & UpdateChannel;
+type GraphqlRequest = Channels & Channel & ChannelsAggregate & UpdateChannel;
